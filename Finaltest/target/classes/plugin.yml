@@ -1,0 +1,11 @@
+name: Finaltest
+version: '1.0-SNAPSHOT'
+main: de.mika32.finaltest.Finaltest
+api-version: 1.19
+
+commands:
+  timer:
+  teleporter:
+    aliases:
+      - tPorter
+      - tporter
