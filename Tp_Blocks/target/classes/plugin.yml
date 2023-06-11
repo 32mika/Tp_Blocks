@@ -1,9 +1,0 @@
-name: Tp_Blocks
-version: '1.0-SNAPSHOT'
-main: de.mika32.tp_blocks.Tp_Blocks
-api-version: 1.19
-commands:
-  teleporter:
-    aliases:
-      - tPorter
-      - tporter
