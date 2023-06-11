@@ -573,8 +573,6 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
         ArrayList<String> retListe = new ArrayList<>();
         ArrayList<String> compList = new ArrayList<>();
 
-
-
         try{
             if(args[0] == null){
                 retListe.add("No Suggestions");
@@ -584,7 +582,6 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
             retListe.add("No Suggestions");
             return retListe;
         }
-
 
         if(args.length == 1){
             retListe.add("help");
@@ -636,7 +633,6 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
             if(retListe.contains("1") && retListe.size() == 1){
                 retListe.add("");
                 retListe.remove("1");
-                System.out.println("hier bin ich ");
             }
 
         }
@@ -648,7 +644,6 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
         }
 
         for (String s : retListe) {
-            System.out.println(retListe);
 
             assert s != null;
             if(s.toLowerCase().startsWith(currentArg)){
