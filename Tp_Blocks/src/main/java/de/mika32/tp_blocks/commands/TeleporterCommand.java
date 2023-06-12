@@ -456,7 +456,6 @@ public class TeleporterCommand implements CommandExecutor {
 
         if(size == 0){
             names = new String[1];
-            System.out.println("bei ersten size raus geflogen");
             return;
         }
 

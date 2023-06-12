@@ -18,7 +18,7 @@ public class Config {
     }
 
     public Config() {
-        File dir = new File("./plugins/FinalTest/");
+        File dir = new File("./plugins/Tp_Blocks/");
 
         if(!dir.exists()) {
             dir.mkdirs();

@@ -1,6 +1,8 @@
 package de.mika32.tp_blocks.listeners;
 
+import de.mika32.tp_blocks.Tp_Blocks;
 import de.mika32.tp_blocks.commands.TeleporterCommand;
+import de.mika32.tp_blocks.utils.Config;
 import it.unimi.dsi.fastutil.ints.Int2IntSortedMaps;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -24,17 +26,58 @@ public class BlocksLinkedListener implements Listener {
     protected static Block b1;
     protected static Block b2;
     protected static Player p = null;
-    private static ArrayList<Block> Tp_Blocks = new ArrayList<Block>();
+    private static ArrayList<Block> Tp_Blocks = new ArrayList<>();
     private static boolean tp_aktiv = false;
     private static boolean aktiv = true;
-    private static DecimalFormat df = new DecimalFormat("#");
+    private static final DecimalFormat df = new DecimalFormat("#");
     private static boolean messagesStatus = true;
-    private static String colorErrorH = ChatColor.RED.toString();
-    private static String colorErrorN = ChatColor.GOLD.toString();
-    private static String colorH = ChatColor.AQUA.toString();
-    private static String colorN = ChatColor.GOLD.toString();
+    private static final String colorErrorH = ChatColor.RED.toString();
+    private static final String colorErrorN = ChatColor.GOLD.toString();
+    private static final String colorH = ChatColor.AQUA.toString();
+    private static final String colorN = ChatColor.GOLD.toString();
     private static Player sender;
 
+
+    public static void save(){
+        int id;
+        int count = 0;
+        boolean hasId;
+        ArrayList<String> loc = new ArrayList<>();
+        ArrayList<String> names1 = new ArrayList<>();
+        Config config = de.mika32.tp_blocks.Tp_Blocks.getConfig1();
+
+        for(Block b : Tp_Blocks){
+            loc.add(b.getLocation().toString());
+        }
+
+        config.getConfig().set("Tp_Blocks.blocks.locations", loc);
+
+        for (String s : TeleporterCommand.getNames()){
+            try{
+                id = Integer.parseInt(s);
+                hasId = true;
+
+            }catch (Exception e){
+                hasId = false;
+            }
+
+            if(!hasId){
+                if(s == null){
+                    names1.add(Integer.toString(count +1));
+                }else {
+                    names1.add(s);
+                }
+            }
+
+            if(hasId){
+                names1.add(Integer.toString(count +1));
+            }
+
+            count++;
+        }
+
+        config.getConfig().set("Tp_Blocks.blocks.names", names1);
+    }
 
     @EventHandler
     public void onBlockClick(PlayerInteractEvent event) {
@@ -107,6 +150,7 @@ public class BlocksLinkedListener implements Listener {
     @EventHandler
     public void onWhoolClick(PlayerInteractEvent event) {
         String s;
+        sender = event.getPlayer();
 
         if(!tp_aktiv){
             return;
@@ -114,7 +158,6 @@ public class BlocksLinkedListener implements Listener {
 
         try {
             if (!aktiv || !event.hasBlock()) {
-                System.out.println("Whool raus bei 1");
                 return;
             }
         }catch (Exception e){
@@ -122,7 +165,6 @@ public class BlocksLinkedListener implements Listener {
         }
 
         if (event.getClickedBlock().getType() != Material.WHITE_WOOL) {
-            System.out.println("Whool raus bei 2");
             return;
         }
 
@@ -130,14 +172,14 @@ public class BlocksLinkedListener implements Listener {
             classicErrorMessage(sender, "Error while adding Tp_Blocks", "While adding other Tp_Block you are not allowed to use any Tp_Blocks!");
             return;
         }
-        System.out.println("test2");
+
 
 
         if(!(Objects.requireNonNull(event.getClickedBlock()).getType().equals(Material.WHITE_WOOL))){
             return;
         }
 
-        System.out.println("test3");
+
 
         Location loc = event.getClickedBlock().getLocation();
 
@@ -147,19 +189,11 @@ public class BlocksLinkedListener implements Listener {
         loc.setPitch(0);
         loc.setYaw(0);
 
-        System.out.println(loc.getBlock().getType());
-
         if(!(loc.getBlock().getType().equals(Material.WHITE_WOOL))){
             return;
         }
 
-
-        System.out.println("vor for schleife");
-
         for(int i = 0; i < Tp_Blocks.size(); i++){
-            System.out.println("in for schleife turn nr " + i);
-
-
             if(loc.equals(Tp_Blocks.get(i).getLocation())){
                 if(i % 2  != 0){
                     classicCleanMessage(sender, ChatColor.AQUA.toString(), "Starting Teleportation...", 0);
@@ -171,7 +205,6 @@ public class BlocksLinkedListener implements Listener {
                     loc2.setY(loc2.getY() +1);
                     loc2.setX(loc2.getX() + 0.5);
                     loc2.setZ(loc2.getZ() + 0.5);
-                    System.out.println(loc2);
 
                     event.getPlayer().teleport(loc2);
 
@@ -188,7 +221,6 @@ public class BlocksLinkedListener implements Listener {
                     loc2.setY(loc2.getY() +2);
                     loc2.setX(loc2.getX() + 0.5);
                     loc2.setZ(loc2.getZ() + 0.5);
-                    System.out.println(loc2);
 
                     event.getPlayer().teleport(loc2);
 
@@ -196,7 +228,6 @@ public class BlocksLinkedListener implements Listener {
                 }
             }
         }
-        return;
     }
 
     public static void classicCleanMessage(CommandSender sender, String col, String part, int delay){

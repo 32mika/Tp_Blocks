@@ -114,7 +114,6 @@ public class BlocksLinkedListener implements Listener {
 
         try {
             if (!aktiv || !event.hasBlock()) {
-                System.out.println("Whool raus bei 1");
                 return;
             }
         }catch (Exception e){
@@ -122,7 +121,6 @@ public class BlocksLinkedListener implements Listener {
         }
 
         if (event.getClickedBlock().getType() != Material.WHITE_WOOL) {
-            System.out.println("Whool raus bei 2");
             return;
         }
 
@@ -130,14 +128,11 @@ public class BlocksLinkedListener implements Listener {
             classicErrorMessage(sender, "Error while adding Tp_Blocks", "While adding other Tp_Block you are not allowed to use any Tp_Blocks!");
             return;
         }
-        System.out.println("test2");
 
 
         if(!(Objects.requireNonNull(event.getClickedBlock()).getType().equals(Material.WHITE_WOOL))){
             return;
         }
-
-        System.out.println("test3");
 
         Location loc = event.getClickedBlock().getLocation();
 
@@ -147,19 +142,11 @@ public class BlocksLinkedListener implements Listener {
         loc.setPitch(0);
         loc.setYaw(0);
 
-        System.out.println(loc.getBlock().getType());
-
         if(!(loc.getBlock().getType().equals(Material.WHITE_WOOL))){
             return;
         }
 
-
-        System.out.println("vor for schleife");
-
         for(int i = 0; i < Tp_Blocks.size(); i++){
-            System.out.println("in for schleife turn nr " + i);
-
-
             if(loc.equals(Tp_Blocks.get(i).getLocation())){
                 if(i % 2  != 0){
                     classicCleanMessage(sender, ChatColor.AQUA.toString(), "Starting Teleportation...", 0);
@@ -171,7 +158,6 @@ public class BlocksLinkedListener implements Listener {
                     loc2.setY(loc2.getY() +1);
                     loc2.setX(loc2.getX() + 0.5);
                     loc2.setZ(loc2.getZ() + 0.5);
-                    System.out.println(loc2);
 
                     event.getPlayer().teleport(loc2);
 
@@ -188,7 +174,6 @@ public class BlocksLinkedListener implements Listener {
                     loc2.setY(loc2.getY() +2);
                     loc2.setX(loc2.getX() + 0.5);
                     loc2.setZ(loc2.getZ() + 0.5);
-                    System.out.println(loc2);
 
                     event.getPlayer().teleport(loc2);
 
