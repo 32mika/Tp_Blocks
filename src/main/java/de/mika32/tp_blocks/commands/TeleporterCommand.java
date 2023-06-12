@@ -2,6 +2,7 @@ package de.mika32.tp_blocks.commands;
 
 import de.mika32.tp_blocks.Tp_Blocks;
 import de.mika32.tp_blocks.listeners.BlocksLinkedListener;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
@@ -92,6 +93,7 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
 
             case "aktiv":{
                 boolean status;
+
 
                 try {
                     status  = Boolean.parseBoolean(args[1].toLowerCase());
@@ -210,7 +212,7 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
         int id = 0;
         boolean hasId = false;
 
-        if(names.length == 1){
+        if(BlocksLinkedListener.getTp_Blocks().size() < 2){
             classicErrorMessage(sender, "Error with List command", "There are no Tp_Blocks in the list");
             return;
         }
@@ -322,9 +324,13 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
         if(id % 2 == 0){
             Tp_Blocks2.remove(id -1);
             Tp_Blocks2.remove(id -2);
+            names[id -1] = null;
+            names[id -2] = null;
         }else {
             Tp_Blocks2.remove(id);
             Tp_Blocks2.remove(id -1);
+            names[id] = null;
+            names[id -1] = null;
         }
 
         classicPlayerMessage(sender, "Successfully deleted both Tp_Blocks", "");
@@ -443,7 +449,6 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
 
 
 
-
     //
     // Starting here -> addition Code / outsourcing in Methods
     //
@@ -459,11 +464,10 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
 
         if(size == 0){
             names = new String[1];
-            System.out.println("bei ersten size raus geflogen");
             return;
         }
 
-        for(int i = 0, c = 0; !done ; i++){
+        for(int i = 0; !done ; i++){
             for(int d = 0; d < names.length -1; d++){
                 foundnull = false;
 
@@ -483,8 +487,10 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
         }
 
         for(String s : names){
-            futureNames[count] = s;
-            count++;
+            if (s != null){
+                futureNames[count] = s;
+                count++;
+            }
         }
 
         for(int i = names.length +1; i < size; i++){
@@ -519,6 +525,10 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
 
     public static void setNames(String[] names) {
         TeleporterCommand.names = names;
+    }
+
+    public static void newNamen(){
+        names = new String[1];
     }
 
     public static String[] getNames() {
@@ -604,7 +614,13 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
             retListe.add("<new Name>");
         }
 
-        if(args.length == 2 && args[0].equalsIgnoreCase("delete") || args.length == 2 && args[0].equalsIgnoreCase("setName")){
+        if(args.length == 2 && args[0].equalsIgnoreCase("setName")){
+            for (int i = 0; i < names.length; i++) {
+                retListe.add(Integer.toString(i +1));
+            }
+        }
+
+        if(args.length == 2 && args[0].equalsIgnoreCase("delete")){
             for (String s : names){
                 try{
                     id = Integer.parseInt(s);
@@ -621,7 +637,6 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
                 }
 
                 if(hasId){
-                    System.out.println(names.length);
                     retListe.add(Integer.toString(count +1));
 
                 }
@@ -636,7 +651,6 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
             }
 
         }
-
 
         if(args.length == 2 && args[0].equalsIgnoreCase("aktiv") ||args.length == 2 && args[0].equalsIgnoreCase("aktivMessages")){
             retListe.add("true");
@@ -658,11 +672,20 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
 // Zufünftige Features:
 //                      - mögliche Einstellung eines Preises für den Tp!
 //                      - extra Texturen für aktive Tp_Blocks + custom item zum Verbinden der Tp_Blocks!
-//                      - Beschriftung dirket in der Minecraftwelt sichtbar machen über Command
+//                      - Beschriftung direkt in der Minecraftwelt sichtbar machen über Command
 //                      - save von erstellten Tp_Blocks in config
 //                      - Tab auto complete für Commands
-//                      - bug fixxen nach triple connect instant tp back to start
-//                      - Tp_Block als varibel machen (nicht nur Wolle als Tp möglich)
+//                      - bug fixen nach triple connect instant tp back to start
+//                      - Tp_Block als variable machen (nicht nur Wolle als Tp möglich)
 //                      - setter für Tp_Blocks variabel machen
 //                      - keine doppelten Paare von Tp_Blocks!
+//                      - leistung verbessern durch die Benutzung von Hashsets
+//                      - debugging prints heraus werfen
+//                      - sound und partikel beim tp
+//                      - befehl für sound und partikel
+//                      - names setzen geht nicht richtig
+//                      - checken ob to block speichern richtig geht
+//                      - leistung beim tp verbessern ggf andere datentypen
+//                      - programm structure verbessern
+//                      - komische command angebote löschen!
 
