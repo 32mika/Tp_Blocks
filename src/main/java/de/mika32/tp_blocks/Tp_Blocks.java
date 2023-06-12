@@ -32,9 +32,6 @@ public final class Tp_Blocks extends JavaPlugin {
 
         Objects.requireNonNull(getCommand("teleporter")).setExecutor(new TeleporterCommand());
 
-        //config.getConfig().set("Tp_Blocks.blocks.locations", null);
-        //config.getConfig().set("Tp_Blocks.blocks.names", null);
-
 
         if(config.getConfig().contains("Tp_Blocks.blocks.locations")){
             ArrayList<String> stringLoc = new ArrayList<>(config.getConfig().getStringList("Tp_Blocks.blocks.locations"));
@@ -65,10 +62,6 @@ public final class Tp_Blocks extends JavaPlugin {
                 TeleporterCommand.newNamen();
             }
         }
-
-
-
-
     }
 
     @Override
