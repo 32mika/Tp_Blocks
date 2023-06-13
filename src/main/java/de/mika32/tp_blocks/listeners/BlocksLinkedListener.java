@@ -38,47 +38,6 @@ public class BlocksLinkedListener implements Listener {
     private static Player sender;
 
 
-    public static void save(){
-        int id;
-        int count = 0;
-        boolean hasId;
-        ArrayList<String> loc = new ArrayList<>();
-        ArrayList<String> names1 = new ArrayList<>();
-        Config config = de.mika32.tp_blocks.Tp_Blocks.getConfig1();
-
-        for(Block b : Tp_Blocks){
-            loc.add(b.getLocation().toString());
-        }
-
-        config.getConfig().set("Tp_Blocks.blocks.locations", loc);
-
-        for (String s : TeleporterCommand.getNames()){
-            try{
-                id = Integer.parseInt(s);
-                hasId = true;
-
-            }catch (Exception e){
-                hasId = false;
-            }
-
-            if(!hasId){
-                if(s == null){
-                    names1.add(Integer.toString(count +1));
-                }else {
-                    names1.add(s);
-                }
-            }
-
-            if(hasId){
-                names1.add(Integer.toString(count +1));
-            }
-
-            count++;
-        }
-
-        config.getConfig().set("Tp_Blocks.blocks.names", names1);
-    }
-
     @EventHandler
     public void onBlockClick(PlayerInteractEvent event) {
         sender = event.getPlayer();
