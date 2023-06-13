@@ -1,7 +1,6 @@
 package de.mika32.tp_blocks.utils;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -32,7 +31,6 @@ public class Config {
             } catch (Exception e) {
 
             }
-
         }
 
         this.config = YamlConfiguration.loadConfiguration(file);
@@ -42,7 +40,7 @@ public class Config {
         try {
             config.save(file);
         } catch (IOException e) {
+
         }
     }
-
 }

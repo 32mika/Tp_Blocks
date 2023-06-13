@@ -2,6 +2,7 @@ package de.mika32.tp_blocks.commands;
 
 import de.mika32.tp_blocks.Tp_Blocks;
 import de.mika32.tp_blocks.listeners.BlocksLinkedListener;
+import de.mika32.tp_blocks.listeners.TabAutoComplete;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -194,17 +195,14 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
 
         if (page.equals("2")){
             classicPlayerMessage(sender, "/teleporter aktivMessages: ", "Activate or deactivate Messages and delay while Tp-ing");
-            classicPlayerMessage(sender, "*Coming soon*", "");
-            classicPlayerMessage(sender, "*Coming soon*", "");
-            classicPlayerMessage(sender, "*Coming soon*", "");
-            classicPlayerMessage(sender, "*Coming soon*", "");
-            classicPlayerMessage(sender, "*Coming soon*", "");
 
+            for (int i = 0; i < 5; i++){
+                classicPlayerMessage(sender, "*Coming soon*", "");
+            }
         }
 
         sender.sendMessage(ChatColor.YELLOW.toString() + "----------------------------------------------------");
         classicPlayerMessage(sender, "", "");
-
     }
 
     public static void sendList(CommandSender sender){
@@ -576,96 +574,7 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String aliass, String[] args) {
-        int id;
-        int count = 0;
-        boolean hasId;
-        String currentArg = args[args.length- 1];
-        ArrayList<String> retListe = new ArrayList<>();
-        ArrayList<String> compList = new ArrayList<>();
-
-        try{
-            if(args[0] == null){
-                retListe.add("No Suggestions");
-                return retListe;
-            }
-        }catch (Exception e){
-            retListe.add("No Suggestions");
-            return retListe;
-        }
-
-        if(args.length == 1){
-            retListe.add("help");
-            retListe.add("delete");
-            retListe.add("setName");
-            retListe.add("aktiv");
-            retListe.add("structure");
-            retListe.add("aliases");
-            retListe.add("list");
-            retListe.add("aktivMessages");
-        }
-
-        if(args.length == 2 && args[0].equalsIgnoreCase("help")){
-            for (int i = 1; i <= 2; i++){
-                retListe.add(Integer.toString(i));
-            }
-        }
-
-        if(args.length == 3 && args[0].equalsIgnoreCase("setName")){
-            retListe.add("<new Name>");
-        }
-
-        if(args.length == 2 && args[0].equalsIgnoreCase("setName")){
-            for (int i = 0; i < names.length; i++) {
-                retListe.add(Integer.toString(i +1));
-            }
-        }
-
-        if(args.length == 2 && args[0].equalsIgnoreCase("delete")){
-            for (String s : names){
-                try{
-                    id = Integer.parseInt(s);
-                    hasId = true;
-
-                }catch (Exception e){
-                    hasId = false;
-                }
-
-                if(!hasId){
-                    retListe.add(s);
-                    retListe.add(Integer.toString(count +1));
-
-                }
-
-                if(hasId){
-                    retListe.add(Integer.toString(count +1));
-
-                }
-
-                count++;
-            }
-            retListe.removeIf(Objects::isNull);
-
-            if(retListe.contains("1") && retListe.size() == 1){
-                retListe.add("");
-                retListe.remove("1");
-            }
-
-        }
-
-        if(args.length == 2 && args[0].equalsIgnoreCase("aktiv") ||args.length == 2 && args[0].equalsIgnoreCase("aktivMessages")){
-            retListe.add("true");
-            retListe.add("false");
-        }
-
-        for (String s : retListe) {
-
-            assert s != null;
-            if(s.toLowerCase().startsWith(currentArg)){
-                compList.add(s);
-            }
-        }
-
-        return compList;
+        return TabAutoComplete.onTabComplete(sender, command, aliass, args);
     }
 }
 
@@ -673,19 +582,12 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
 //                      - mögliche Einstellung eines Preises für den Tp!
 //                      - extra Texturen für aktive Tp_Blocks + custom item zum Verbinden der Tp_Blocks!
 //                      - Beschriftung direkt in der Minecraftwelt sichtbar machen über Command
-//                      - save von erstellten Tp_Blocks in config
-//                      - Tab auto complete für Commands
 //                      - bug fixen nach triple connect instant tp back to start
 //                      - Tp_Block als variable machen (nicht nur Wolle als Tp möglich)
 //                      - setter für Tp_Blocks variabel machen
-//                      - keine doppelten Paare von Tp_Blocks!
 //                      - leistung verbessern durch die Benutzung von Hashsets
-//                      - debugging prints heraus werfen
 //                      - sound und partikel beim tp
 //                      - befehl für sound und partikel
-//                      - names setzen geht nicht richtig
-//                      - checken ob to block speichern richtig geht
-//                      - leistung beim tp verbessern ggf andere datentypen
-//                      - programm structure verbessern
+//                      - leistung beim tp verbessern ggf andere datentypen(Hashmap + ggf. Hashset)
 //                      - komische command angebote löschen!
 
