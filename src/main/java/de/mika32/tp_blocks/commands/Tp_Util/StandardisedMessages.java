@@ -18,7 +18,7 @@ public class StandardisedMessages {
     }
 
     public static void classicErrorMessage(CommandSender sender, String firstP, String secondP) {
-        if (secondP.equals("")){
+        if (secondP.equals("")) {
             sender.sendMessage(colorError + firstP);
             return;
         }
