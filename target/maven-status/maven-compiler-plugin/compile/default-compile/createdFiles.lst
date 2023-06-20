@@ -1,4 +1,11 @@
 de\mika32\tp_blocks\commands\TeleporterCommand.class
-de\mika32\tp_blocks\utils\Config.class
-de\mika32\tp_blocks\listeners\BlocksLinkedListener.class
+de\mika32\tp_blocks\commands\Tp_Util\RefreshNameArray.class
+de\mika32\tp_blocks\commands\args\StandardisedMessages.class
 de\mika32\tp_blocks\Tp_Blocks.class
+de\mika32\tp_blocks\utils\Save.class
+de\mika32\tp_blocks\utils\Config.class
+de\mika32\tp_blocks\utils\SetSave.class
+de\mika32\tp_blocks\listeners\TabAutoComplete.class
+de\mika32\tp_blocks\commands\args\SendDelete.class
+de\mika32\tp_blocks\commands\args\SendHelp.class
+de\mika32\tp_blocks\listeners\BlocksLinkedListener.class

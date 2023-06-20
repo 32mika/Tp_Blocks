@@ -1,5 +1,6 @@
 package de.mika32.tp_blocks.listeners;
 
+import com.sun.tools.classfile.TypeAnnotation;
 import de.mika32.tp_blocks.Tp_Blocks;
 import de.mika32.tp_blocks.commands.TeleporterCommand;
 import de.mika32.tp_blocks.utils.Config;
@@ -20,6 +21,8 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Objects;
+
+import static de.mika32.tp_blocks.commands.Tp_Util.RefreshNameArray.refreshNameArray;
 
 
 public class BlocksLinkedListener implements Listener {
@@ -86,7 +89,7 @@ public class BlocksLinkedListener implements Listener {
             b2 = null;
             p = null;
 
-            TeleporterCommand.refreshNameArray(Tp_Blocks.size());
+            refreshNameArray(Tp_Blocks.size());
 
             return;
         }
