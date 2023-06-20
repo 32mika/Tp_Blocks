@@ -55,18 +55,6 @@ public class SendDelete {
             BlocksLinkedListener.setTp_Blocks(Tp_Blocks2);
             refreshNameArray(BlocksLinkedListener.getTp_Blocks().size());
 
-            try {
-                assert names != null;
-                for(String s : names){
-                    if (s == null) {
-                        BlocksLinkedListener.setAktiv(false);
-                    }
-                }
-
-            }catch (Exception e){
-                    names = new String[1];
-                    BlocksLinkedListener.setTp_aktiv(false);
-            }
             return;
         }
 
@@ -95,18 +83,5 @@ public class SendDelete {
         TeleporterCommand.setNames(names);
         BlocksLinkedListener.setTp_Blocks(Tp_Blocks2);
         refreshNameArray(BlocksLinkedListener.getTp_Blocks().size());
-
-        try {
-            assert names != null;
-            for(String s : names){
-                if (s == null) {
-                    BlocksLinkedListener.setAktiv(false);
-                }
-            }
-
-        }catch (Exception e){
-            names = new String[1];
-            BlocksLinkedListener.setTp_aktiv(false);
-        }
     }
 }

@@ -81,7 +81,7 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
                 }
 
                 try {
-                    args[1].indexOf(1);
+                    args[2].indexOf(1);
 
                 }catch (Exception e){
                     classicErrorMessage(sender, "Error no valid name was passed", "");
@@ -236,4 +236,7 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
 //                      - komische command angebote löschen!
 //                      - command methoden optimieren gerade sendDelete
 //                      - triple Tps verhindern! <- vorteilhaft mit maps
+//                      - delay heraus löschen und durch andere functionality ersetzen
+//                      - aliases tab completor fixen nach page
+//                      - tab completor auch für aliases -> beim schreiben einfügen
 

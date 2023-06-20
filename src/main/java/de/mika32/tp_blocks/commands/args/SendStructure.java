@@ -19,6 +19,5 @@ public class SendStructure {
         classicPlayerMessage(sender, "list");
 
         sender.sendMessage(ChatColor.YELLOW.toString() + "---------------------------------------------" );
-
     }
 }
