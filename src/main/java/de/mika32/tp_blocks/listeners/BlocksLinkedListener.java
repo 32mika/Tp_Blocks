@@ -1,9 +1,5 @@
 package de.mika32.tp_blocks.listeners;
 
-import com.sun.tools.classfile.TypeAnnotation;
-import de.mika32.tp_blocks.Tp_Blocks;
-import de.mika32.tp_blocks.commands.TeleporterCommand;
-import de.mika32.tp_blocks.utils.Config;
 import it.unimi.dsi.fastutil.ints.Int2IntSortedMaps;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -11,35 +7,41 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.plugin.java.JavaPlugin;
+import static de.mika32.tp_blocks.commands.Tp_Util.RefreshNameArray.refreshNameArray;
 
-import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Objects;
-
-import static de.mika32.tp_blocks.commands.Tp_Util.RefreshNameArray.refreshNameArray;
 
 
 public class BlocksLinkedListener implements Listener {
     protected static Block b1;
     protected static Block b2;
     protected static Player p = null;
-    private static ArrayList<Block> Tp_Blocks = new ArrayList<>();
+    private static Player sender;
+    private String lastTime = "00:00:00";
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    private static final JavaPlugin plugin = de.mika32.tp_blocks.Tp_Blocks.getInstance();
+    private final static int delay = 20;
+    private static int count1 = 0;
     private static boolean tp_aktiv = false;
     private static boolean aktiv = true;
-    private static final DecimalFormat df = new DecimalFormat("#");
     private static boolean messagesStatus = true;
+    private static boolean moreTxt = false;
+    private static ArrayList<Block> Tp_Blocks = new ArrayList<>();
+    private static final DecimalFormat df = new DecimalFormat("#");
     private static final String colorErrorH = ChatColor.RED.toString();
     private static final String colorErrorN = ChatColor.GOLD.toString();
     private static final String colorH = ChatColor.AQUA.toString();
     private static final String colorN = ChatColor.GOLD.toString();
-    private static Player sender;
-
+    private static boolean isTeleporting = false;
 
     @EventHandler
     public void onBlockClick(PlayerInteractEvent event) {
@@ -67,20 +69,25 @@ public class BlocksLinkedListener implements Listener {
 
             classicCleanMessage(sender, ChatColor.GOLD.toString(), "Second Tp_Block selected" , 0);
             classicCleanMessage(sender, ChatColor.RED.toString(), "", 0);
-            classicCleanMessage(sender, ChatColor.GOLD.toString(), "Both Tp_Blocks selected successfully!" , 1000);
-            classicCleanMessage(sender, ChatColor.RED.toString(), "", 0);
 
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                classicCleanMessage(sender, ChatColor.GOLD.toString(), "Both Tp_Blocks selected successfully!" , 1000);
+                classicCleanMessage(sender, ChatColor.RED.toString(), "", 0);
 
-            classicCleanMessage(sender, ChatColor.AQUA.toString(), "---Working_on_Connection---", 1000);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    classicCleanMessage(sender, ChatColor.AQUA.toString(), "---Working_on_Connection---", 1000);
+                }, delay);
+            }, delay);
 
             if(b1.equals(b2)){
-                classicErrorMessage(sender, "Error while connecting", "Cant connect a Tp_Block to it self!");
+                classicErrorMessage(sender, "Error while connecting", "Cant connect a Tp_Block with it self!");
                 return;
             }
 
-
-            classicCleanMessage(sender, ChatColor.RED.toString(), "", 2000);
-            classicCleanMessage(sender, ChatColor.AQUA.toString(), "Blocks linked now!", 0);
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                classicCleanMessage(sender, ChatColor.RED.toString(), "", 2000);
+                classicCleanMessage(sender, ChatColor.AQUA.toString(), "Blocks linked now!", 0);
+            }, delay * 3L);
 
             Tp_Blocks.add(b1);
             Tp_Blocks.add(b2);
@@ -90,7 +97,6 @@ public class BlocksLinkedListener implements Listener {
             p = null;
 
             refreshNameArray(Tp_Blocks.size());
-
             return;
         }
 
@@ -99,23 +105,24 @@ public class BlocksLinkedListener implements Listener {
 
         classicCleanMessage(sender, ChatColor.GOLD.toString(), "First Tp_Block selected!", 0);
         classicCleanMessage(sender, ChatColor.RED.toString(), "", 0);
-    }
-
-    private static void delay(int millisekunden){
-        try {
-            Thread.sleep(millisekunden);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        moreTxt = true;
     }
 
     @EventHandler
     public void onWhoolClick(PlayerInteractEvent event) {
         String s;
+        String currentTime = LocalTime.now().format(formatter);
         sender = event.getPlayer();
+        int locDelay;
 
-        if(!tp_aktiv){
+        if(lastTime.equals(currentTime)){
             return;
+        }
+
+        if(moreTxt){
+           locDelay = 60;
+        }else{
+            locDelay = 0;
         }
 
         try {
@@ -135,13 +142,9 @@ public class BlocksLinkedListener implements Listener {
             return;
         }
 
-
-
         if(!(Objects.requireNonNull(event.getClickedBlock()).getType().equals(Material.WHITE_WOOL))){
             return;
         }
-
-
 
         Location loc = event.getClickedBlock().getLocation();
 
@@ -158,51 +161,68 @@ public class BlocksLinkedListener implements Listener {
         for(int i = 0; i < Tp_Blocks.size(); i++){
             if(loc.equals(Tp_Blocks.get(i).getLocation())){
                 if(i % 2  != 0){
-                    classicCleanMessage(sender, ChatColor.AQUA.toString(), "Starting Teleportation...", 0);
-                    classicCleanMessage(sender, ChatColor.AQUA.toString(), "...", 1000);
-                    classicCleanMessage(sender, ChatColor.AQUA.toString(), "...", 350);
-                    classicCleanMessage(sender, ChatColor.AQUA.toString(), "...", 350);
+                    count1++;
+
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        classicCleanMessage(sender, ChatColor.AQUA.toString(), "Starting Teleportation...", 0);
+                        printTeleport();
+                    }, locDelay + 10);
 
                     Location loc2 = Tp_Blocks.get(i -1).getLocation();
                     loc2.setY(loc2.getY() +1);
                     loc2.setX(loc2.getX() + 0.5);
                     loc2.setZ(loc2.getZ() + 0.5);
 
-                    event.getPlayer().teleport(loc2);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        event.getPlayer().teleport(loc2);
+                        classicCleanMessage(sender, ChatColor.AQUA.toString(), "Teleport done!", 350);
+                    }, locDelay + 45);
 
-                    classicCleanMessage(sender, ChatColor.AQUA.toString(), "Teleport done!", 350);
+                    moreTxt = false;
                 }
 
                 if(i % 2  == 0){
-                    classicCleanMessage(sender, ChatColor.AQUA.toString(), "Starting Teleportation...", 0);
-                    classicCleanMessage(sender, ChatColor.AQUA.toString(), "...", 1000);
-                    classicCleanMessage(sender, ChatColor.AQUA.toString(), "...", 350);
-                    classicCleanMessage(sender, ChatColor.AQUA.toString(), "...", 350);
+                    count1++;
+
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        classicCleanMessage(sender, ChatColor.AQUA.toString(), "Starting Teleportation...", 0);
+                        printTeleport();
+                    }, locDelay + 10);
 
                     Location loc2 = Tp_Blocks.get(i +1).getLocation();
                     loc2.setY(loc2.getY() +2);
                     loc2.setX(loc2.getX() + 0.5);
                     loc2.setZ(loc2.getZ() + 0.5);
 
-                    event.getPlayer().teleport(loc2);
+                    Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                        event.getPlayer().teleport(loc2);
+                        classicCleanMessage(sender, ChatColor.AQUA.toString(), "Teleport done!", 350);
+                    }, locDelay + 45);
 
-                    classicCleanMessage(sender, ChatColor.AQUA.toString(), "Teleport done!", 350);
+                    moreTxt = false;
                 }
             }
         }
+        lastTime = LocalTime.now().format(formatter);
+    }
+
+    private static void printTeleport(){
+        Bukkit.getScheduler().runTaskLater(plugin, () -> {
+            classicCleanMessage(sender, ChatColor.AQUA.toString(), "...", 1000);
+
+            Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                classicCleanMessage(sender, ChatColor.AQUA.toString(), "...", 350);
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    classicCleanMessage(sender, ChatColor.AQUA.toString(), "...", 350);
+                }, 7);
+            }, 7);
+        }, 20);
     }
 
     public static void classicCleanMessage(CommandSender sender, String col, String part, int delay){
         if(!messagesStatus){
             return;
         }
-
-        try {
-            Thread.sleep(delay);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-
         sender.sendMessage(col + part);
     }
 
