@@ -226,17 +226,15 @@ public class TeleporterCommand implements CommandExecutor, TabCompleter {
 //                      - mögliche Einstellung eines Preises für den Tp!
 //                      - extra Texturen für aktive Tp_Blocks + custom item zum Verbinden der Tp_Blocks!
 //                      - Beschriftung direkt in der Minecraftwelt sichtbar machen über Command
-//                      - bug fixen nach triple connect instant tp back to start
 //                      - Tp_Block als variable machen (nicht nur Wolle als Tp möglich)
 //                      - setter für Tp_Blocks variabel machen
-//                      - leistung verbessern durch die Benutzung von Hashsets
+//                      - leistung verbessern durch die Benutzung von Hashsets und maps
 //                      - sound und partikel beim tp
 //                      - befehl für sound und partikel
 //                      - leistung beim tp verbessern ggf andere datentypen(Hashmap + ggf. Hashset)
 //                      - komische command angebote löschen!
 //                      - command methoden optimieren gerade sendDelete
 //                      - triple Tps verhindern! <- vorteilhaft mit maps
-//                      - delay heraus löschen und durch andere functionality ersetzen
 //                      - aliases tab completor fixen nach page
-//                      - tab completor auch für aliases -> beim schreiben einfügen
+//                      - tab completor auch für aliases -> beim Schreiben einfügen
 

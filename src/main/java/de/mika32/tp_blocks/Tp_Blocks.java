@@ -29,7 +29,6 @@ public final class Tp_Blocks extends JavaPlugin {
         TeleporterCommand tp = new TeleporterCommand();
 
         Objects.requireNonNull(getCommand("teleporter")).setExecutor(new TeleporterCommand());
-
         world = this.getServer().getWorld("world");
         SetSave.setAll();
     }
